@@ -1,8 +1,10 @@
 const moment = require('moment');
 const myOdd = require('lodash');
+const fs = require('fs');
 const Tiger = require('./lib/Tiger');
 const Wolf = require('./lib/Wolf');
 const { EventEmitter } = require('events');
+const { resolve } = require('path');
 
 const date = moment().format("Do MMM YYYY");
 const myOddEvenArray = myOdd.partition([1, 2, 3, 4, 5, 6], (n) => n % 2);
@@ -22,6 +24,9 @@ const fighting = (tiger, wolf) => {
   console.log('Tiger and Wolf have same strength');
 }
 
+const tiger = new Tiger();
+const wolf = new Wolf();
+
 const makeCoffee = (name) => {
     console.log(`Kopi ${name} telah dibuat!`);
 };
@@ -35,21 +40,29 @@ const onCoffeeOrderedListener = ({ name, price }) => {
     makeBill(price);
 }
 
+// myEventEmitter.on('coffee-order', onCoffeeOrderedListener);
+// myEventEmitter.emit('coffee-order', { name: 'Tubruk', price: 15000 });
+
 const birthdayEventListener = (name) => {
     console.log(`Happy birthday ${name}!`);
 }
 
-const tiger = new Tiger();
-const wolf = new Wolf();
+// const myEmitter = new EventEmitter();
 
-// myEventEmitter.on('coffee-order', onCoffeeOrderedListener);
-// myEventEmitter.emit('coffee-order', { name: 'Tubruk', price: 15000 });
+// myEmitter.on('birthday', birthdayEventListener);
+// myEmitter.emit('birthday', 'Rispian');
 
-const myEmitter = new EventEmitter();
+const fileReadCallback = (error, data) => {
+    if(error) {
+      console.log('Gagal membaca berkas');
+      return;
+    }
 
-myEmitter.on('birthday', birthdayEventListener);
-myEmitter.emit('birthday', 'Rispian');
+    console.log(data);
+};
 
-fighting(tiger, wolf);
+fs.readFile(resolve(__dirname, 'notes.txt'), 'UTF-8', fileReadCallback);
+
+// fighting(tiger, wolf);
 // console.log(myOddEvenArray);
 // console.log(date);
