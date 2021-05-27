@@ -35,11 +35,20 @@ const onCoffeeOrderedListener = ({ name, price }) => {
     makeBill(price);
 }
 
+const birthdayEventListener = (name) => {
+    console.log(`Happy birthday ${name}!`);
+}
+
 const tiger = new Tiger();
 const wolf = new Wolf();
 
-myEventEmitter.on('coffee-order', onCoffeeOrderedListener);
-myEventEmitter.emit('coffee-order', { name: 'Tubruk', price: 15000 });
+// myEventEmitter.on('coffee-order', onCoffeeOrderedListener);
+// myEventEmitter.emit('coffee-order', { name: 'Tubruk', price: 15000 });
+
+const myEmitter = new EventEmitter();
+
+myEmitter.on('birthday', birthdayEventListener);
+myEmitter.emit('birthday', 'Rispian');
 
 fighting(tiger, wolf);
 // console.log(myOddEvenArray);
