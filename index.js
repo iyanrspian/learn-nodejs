@@ -52,16 +52,32 @@ const birthdayEventListener = (name) => {
 // myEmitter.on('birthday', birthdayEventListener);
 // myEmitter.emit('birthday', 'Rispian');
 
-const fileReadCallback = (error, data) => {
-    if(error) {
-      console.log('Gagal membaca berkas');
-      return;
+// const fileReadCallback = (error, data) => {
+//     if(error) {
+//       console.log('Gagal membaca berkas');
+//       return;
+//     }
+
+//     console.log(data);
+// };
+
+// fs.readFile(resolve(__dirname, 'notes.txt'), 'UTF-8', fileReadCallback);
+
+const readableStream = fs.createReadStream('./article.txt', {
+    highWaterMark: 10
+});
+
+readableStream.on('readable', () => {
+    try {
+        process.stdout.write(`[${readableStream.read()}]`);
+    } catch(error) {
+        // catch the error when the chunk cannot be read.
     }
+});
 
-    console.log(data);
-};
-
-fs.readFile(resolve(__dirname, 'notes.txt'), 'UTF-8', fileReadCallback);
+readableStream.on('end', () => {
+    console.log('Done');
+});
 
 // fighting(tiger, wolf);
 // console.log(myOddEvenArray);
