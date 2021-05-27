@@ -63,20 +63,38 @@ const birthdayEventListener = (name) => {
 
 // fs.readFile(resolve(__dirname, 'notes.txt'), 'UTF-8', fileReadCallback);
 
-const readableStream = fs.createReadStream('./article.txt', {
-    highWaterMark: 10
-});
+// const readableStream = fs.createReadStream('./article.txt', {
+//     highWaterMark: 10
+// });
 
-readableStream.on('readable', () => {
+// readableStream.on('readable', () => {
+//     try {
+//         process.stdout.write(`[${readableStream.read()}]`);
+//     } catch(error) {
+//         // catch the error when the chunk cannot be read.
+//     }
+// });
+
+// readableStream.on('end', () => {
+//     console.log('Done');
+// });
+
+const readableStream = fs.createReadStream(resolve(__dirname, 'input.txt'), {
+    highWaterMark: 15,
+  });
+  
+  const writableStream = fs.createWriteStream(resolve(__dirname, 'output.txt'));
+  
+  readableStream.on('readable', () => {
     try {
-        process.stdout.write(`[${readableStream.read()}]`);
-    } catch(error) {
-        // catch the error when the chunk cannot be read.
+      writableStream.write(`${readableStream.read()}\n`);
+    } catch (error) {
+      // catch the error when the chunk cannot be read.
     }
 });
 
 readableStream.on('end', () => {
-    console.log('Done');
+    writableStream.end();
 });
 
 // fighting(tiger, wolf);
